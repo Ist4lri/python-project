@@ -35,10 +35,7 @@ with open("Chr21.fasta", "r") as ADNSequence:
                     else:
                         ARN += "G"
 
-print(ARN)
 
 for i in range(0, len(ARN)):
     if dict_traduire.get(ARN[i:i+3]):
         PROT += dict_traduire.get(ARN[i:i+3])
-
-print(PROT)
