@@ -26,8 +26,8 @@ def split(file):
     mon_dict = dict()
     mon_dict_Start = dict()
     mon_dict_End = dict()
-    split = file.split(".")
-    extension = split[1]
+    S = file.split(".")
+    extension = S[1]
     print(extension)
     if extension == 'gtf' or extension == 'gff':
         #################Fonction qui permet de supprimer toutes lignes contenant la chaîne de caractère 'start'
@@ -61,4 +61,5 @@ def split(file):
             print(key,value)
     else:
         print('Utilisez fichiers format gtf')
-split("Documents/ILP/python/Projet/ensembl.gtf")   
+        
+split("Documents/ILP/python/Projet/ensembl.gtf") 
