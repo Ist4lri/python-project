@@ -1,3 +1,5 @@
+#J'ai écrit deux codes pour la même fonction le premier ne retourne que le premier couple START/END de chaque exon
+#Le second retourne la couverture génomique du transcript 
 def split(file):
     mon_dict = dict()
     split = file.split(".")
@@ -17,4 +19,35 @@ def split(file):
         print('Utilisez fichiers format gtf')
 split("Documents/ILP/python/Projet/ensembl.gtf")  
 
+########################################################################################################
 
+def split(file):
+    mon_dict = dict()
+    mon_dict_Start = dict()
+    mon_dict_End = dict()
+    split = file.split(".")
+    extension = split[1]
+    print(extension)
+    if extension == 'gtf' or extension == 'gff':
+        G = open(file, 'r')
+        for i in G:
+            m = i.split("\t")
+            Start = m[3]
+            End = m[4]
+            Start_End = Start + "-" + End
+            transcript_ID = m[9]
+            if not mon_dict.get(transcript_ID):
+                mon_dict_Start[transcript_ID] = Start
+                mon_dict_End[transcript_ID] = End
+                mon_dict[transcript_ID] = Start_End
+            else:
+                if mon_dict_Start[transcript_ID] > Start and  mon_dict_End[transcript_ID] < End:                   
+                    mon_dict_Start[transcript_ID]= Start
+                    mon_dict_End[transcript_ID] = End
+                    mon_dict[transcript_ID] = Start_End
+                    
+        for key,value in mon_dict.items():
+            print(key,value)
+    else:
+        print('Utilisez fichiers format gtf')
+split("Documents/ILP/python/Projet/ensembl.gtf")
