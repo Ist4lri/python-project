@@ -22,8 +22,6 @@ split("Documents/ILP/python/Projet/ensembl.gtf")
 ########################################################################################################
 ########################################################################################################
 
-#Celle ci n'est pas encore fini je n'arrive pas encore à obtenir la couverture génomique la plus importante dans mon dict
-
 def split(file):
     mon_dict = dict()
     mon_dict_Start = dict()
@@ -53,13 +51,14 @@ def split(file):
                 mon_dict_End[transcript_ID] = End
                 mon_dict[transcript_ID] = Start_End
             else:
-                if mon_dict_Start[transcript_ID] > Start and  mon_dict_End[transcript_ID] < End:                   
+                if mon_dict_Start[transcript_ID] > Start:
                     mon_dict_Start[transcript_ID]= Start
-                    mon_dict_End[transcript_ID] = End
                     mon_dict[transcript_ID] = str(mon_dict_Start[transcript_ID]) + "-" + str(mon_dict_End[transcript_ID])
+                    if mon_dict_End[transcript_ID] < End:                   
+                        mon_dict_End[transcript_ID] = End
                     
         for key,value in mon_dict.items():
             print(key,value)
     else:
         print('Utilisez fichiers format gtf')
-split("Documents/ILP/python/Projet/ensembl.gtf")
+split("Documents/ILP/python/Projet/ensembl.gtf")   
