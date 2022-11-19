@@ -20,6 +20,9 @@ def split(file):
 split("Documents/ILP/python/Projet/ensembl.gtf")  
 
 ########################################################################################################
+########################################################################################################
+
+#Celle ci n'est pas encore fini je n'arrive pas encore à obtenir la couverture génomique la plus importante dans mon dict
 
 def split(file):
     mon_dict = dict()
@@ -29,12 +32,21 @@ def split(file):
     extension = split[1]
     print(extension)
     if extension == 'gtf' or extension == 'gff':
+        #################Fonction qui permet de supprimer toutes lignes contenant la chaîne de caractère 'start'
+        with open(file,"r+") as f:
+            new_f = f.readlines()
+            f.seek(0)
+            for line in new_f:
+                if "start" not in line:
+                    f.write(line)
+            f.truncate()
+        ################
         G = open(file, 'r')
         for i in G:
             m = i.split("\t")
-            Start = m[3]
-            End = m[4]
-            Start_End = Start + "-" + End
+            Start = int(m[3])
+            End = int(m[4])
+            Start_End = str(Start) + "-" + str(End)
             transcript_ID = m[9]
             if not mon_dict.get(transcript_ID):
                 mon_dict_Start[transcript_ID] = Start
@@ -44,7 +56,7 @@ def split(file):
                 if mon_dict_Start[transcript_ID] > Start and  mon_dict_End[transcript_ID] < End:                   
                     mon_dict_Start[transcript_ID]= Start
                     mon_dict_End[transcript_ID] = End
-                    mon_dict[transcript_ID] = Start_End
+                    mon_dict[transcript_ID] = str(mon_dict_Start[transcript_ID]) + "-" + str(mon_dict_End[transcript_ID])
                     
         for key,value in mon_dict.items():
             print(key,value)
