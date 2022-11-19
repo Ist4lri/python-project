@@ -1,0 +1,20 @@
+def split(file):
+    mon_dict = dict()
+    split = file.split(".")
+    extension = split[1]
+    print(extension)
+    if extension == 'gtf' or extension == 'gff':
+        G = open(file, 'r')
+        for i in G:
+            m = i.split("\t")
+            Start_End = m[3] + "-" + m[4]
+            gene_ID = m[8]
+            if not mon_dict.get(gene_ID):
+                mon_dict[gene_ID] = Start_End
+        for key,value in mon_dict.items():
+            print(key,value)
+    else:
+        print('Utilisez fichiers format gtf')
+split("Documents/ILP/python/Projet/ensembl.gtf")  
+
+
