@@ -1,5 +1,5 @@
 #J'ai écrit deux codes pour la même fonction le premier ne retourne que le premier couple START/END de chaque exon
-#Le second retourne la couverture génomique du transcript 
+#Le second retourne la couverture génomique de chaque transcript 
 def split(file):
     mon_dict = dict()
     split = file.split(".")
@@ -21,6 +21,7 @@ split("Documents/ILP/python/Projet/ensembl.gtf")
 
 ########################################################################################################
 ########################################################################################################
+
 
 def split(file):
     mon_dict = dict()
@@ -61,5 +62,36 @@ def split(file):
             print(key,value)
     else:
         print('Utilisez fichiers format gtf')
+          
+    def fasta(file2):
+        S2 = file2.split(".")
+        extension = S2[1]
+        print(extension)
+        if extension == 'fasta':
+            ################Fonction qui permet de supprimer toutes lignes contenant la chaîne de caractère 'chromosome'
+            with open(file2,"r+") as f2:
+                new_f2 = f2.readlines()
+                f2.seek(0)
+                for line in new_f2:
+                    if "chromosome" not in line:
+                        f2.write(line)
+                        f2.truncate()
+            ################
+            F = open(file2, 'r')
+            R = F.read()
+            for key,value in mon_dict.items():
+                m2 = value.split("-")
+                Start2 = int(m2[0])
+                print(Start2)
+                End2 = int(m2[1])
+                print(End2)
+                sequence = R[Start2:End2]
+                print(sequence)
+                
+        
+        else:
+            print("Utilisez fichiers format fasta")
+            
+    fasta("Documents/ILP/python/Projet/chr22.fasta")
         
 split("Documents/ILP/python/Projet/ensembl.gtf") 
