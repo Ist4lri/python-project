@@ -21,7 +21,8 @@ split("Documents/ILP/python/Projet/ensembl.gtf")
 
 ########################################################################################################
 ########################################################################################################
-
+#Presque terminée mais il y a encore un dernier problème à régler. Le nouveau dictionnaire n'associe pas chaque transcript_ID à chaque séquence mais 
+un seul pour toutes les séquences découpées il est donc impossible de les récupérer de manière individuelle dans ce nouveau dictionnaire.
 
 def split(file):
     mon_dict = dict()
@@ -67,6 +68,7 @@ def split(file):
         S2 = file2.split(".")
         extension = S2[1]
         print(extension)
+        mon_dict_fasta = dict()
         if extension == 'fasta':
             ################Fonction qui permet de supprimer toutes lignes contenant la chaîne de caractère 'chromosome'
             with open(file2,"r+") as f2:
@@ -77,21 +79,27 @@ def split(file):
                         f2.write(line)
                         f2.truncate()
             ################
-            F = open(file2, 'r')
+            F = open(file2, 'r+')
             R = F.read()
             for key,value in mon_dict.items():
                 m2 = value.split("-")
+                transcript_ID2 = str(key)
                 Start2 = int(m2[0])
                 print(Start2)
                 End2 = int(m2[1])
                 print(End2)
                 sequence = R[Start2:End2]
-                print(sequence)
-                
-        
+                if not mon_dict_fasta.get(transcript_ID2):
+                    mon_dict_fasta[transcript_ID] = sequence
+                else:
+                    mon_dict_fasta[transcript_ID] += sequence
+            
+            for key,value in mon_dict_fasta.items():
+                print(key,value)
+            
         else:
             print("Utilisez fichiers format fasta")
             
-    fasta("Documents/ILP/python/Projet/chr22.fasta")
+    fasta("chromosome22.fasta")
         
-split("Documents/ILP/python/Projet/ensembl.gtf") 
+split("MYH9.gtf") 
