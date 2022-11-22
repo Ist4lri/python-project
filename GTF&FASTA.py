@@ -19,7 +19,7 @@ def split(file):
         print('Utilisez fichiers format gtf')
 
 
-split("Documents/ILP/python/Projet/ensembl.gtf")
+split("ensembl.gtf")
 
 ########################################################################################################
 ########################################################################################################
@@ -107,7 +107,7 @@ def split(file):
     fasta("chromosome22.fasta")
 
 
-split("MYH9.gtf")
+split("ensembl.gtf")
 
 # lien des fichiers
 
