@@ -108,8 +108,3 @@ def split(file):
 
 
 split("ensembl.gtf")
-
-# lien des fichiers
-
-# sequence chromosome22 : https://www.ncbi.nlm.nih.gov/sviewer/viewer.cgi?tool=portal&save=file&log$=seqview&db=nuccore&report=fasta&id=568815576&&ncbi_phid=null
-# ficher gtf transcripts MYH9 : https://www.ensembl.org/Homo_sapiens/Export/Output/Gene?db=core;flank3_display=0;flank5_display=0;g=ENSG00000100345;output=gtf;r=22:36281280-36388010;strand=feature;param=similarity;param=repeat;param=genscan;param=variation;param=gene;vegagene=yes;marker=yes;estgene=yes;contig=yes;_format=TextGz
