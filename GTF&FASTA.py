@@ -1,5 +1,5 @@
-#J'ai écrit deux codes pour la même fonction le premier ne retourne que le premier couple START/END de chaque exon
-#Le second retourne la couverture génomique de chaque transcript 
+# J'ai écrit deux codes pour la même fonction le premier ne retourne que le premier couple START/END de chaque exon
+# Le second retourne la couverture génomique de chaque transcript
 def split(file):
     mon_dict = dict()
     split = file.split(".")
@@ -13,16 +13,19 @@ def split(file):
             gene_ID = m[8]
             if not mon_dict.get(gene_ID):
                 mon_dict[gene_ID] = Start_End
-        for key,value in mon_dict.items():
-            print(key,value)
+        for key, value in mon_dict.items():
+            print(key, value)
     else:
         print('Utilisez fichiers format gtf')
-split("Documents/ILP/python/Projet/ensembl.gtf")  
+
+
+split("Documents/ILP/python/Projet/ensembl.gtf")
 
 ########################################################################################################
 ########################################################################################################
-#Presque terminée mais il y a encore un dernier problème à régler. Le nouveau dictionnaire n'associe pas chaque transcript_ID à chaque séquence mais 
-un seul pour toutes les séquences découpées il est donc impossible de les récupérer de manière individuelle dans ce nouveau dictionnaire.
+# Presque terminée mais il y a encore un dernier problème à régler. Le nouveau dictionnaire n'associe pas chaque transcript_ID à chaque séquence mais
+# un seul pour toutes les séquences découpées il est donc impossible de les récupérer de manière individuelle dans ce nouveau dictionnaire.
+
 
 def split(file):
     mon_dict = dict()
@@ -32,8 +35,8 @@ def split(file):
     extension = S[1]
     print(extension)
     if extension == 'gtf' or extension == 'gff':
-        #################Fonction qui permet de supprimer toutes lignes contenant la chaîne de caractère 'start'
-        with open(file,"r+") as f:
+        # Fonction qui permet de supprimer toutes lignes contenant la chaîne de caractère 'start'
+        with open(file, "r+") as f:
             new_f = f.readlines()
             f.seek(0)
             for line in new_f:
@@ -54,24 +57,25 @@ def split(file):
                 mon_dict[transcript_ID] = Start_End
             else:
                 if mon_dict_Start[transcript_ID] > Start:
-                    mon_dict_Start[transcript_ID]= Start
-                    mon_dict[transcript_ID] = str(mon_dict_Start[transcript_ID]) + "-" + str(mon_dict_End[transcript_ID])
-                    if mon_dict_End[transcript_ID] < End:                   
+                    mon_dict_Start[transcript_ID] = Start
+                    mon_dict[transcript_ID] = str(
+                        mon_dict_Start[transcript_ID]) + "-" + str(mon_dict_End[transcript_ID])
+                    if mon_dict_End[transcript_ID] < End:
                         mon_dict_End[transcript_ID] = End
-                    
-        for key,value in mon_dict.items():
-            print(key,value)
+
+        for key, value in mon_dict.items():
+            print(key, value)
     else:
         print('Utilisez fichiers format gtf')
-          
+
     def fasta(file2):
         S2 = file2.split(".")
         extension = S2[1]
         print(extension)
         mon_dict_fasta = dict()
         if extension == 'fasta':
-            ################Fonction qui permet de supprimer toutes lignes contenant la chaîne de caractère 'chromosome'
-            with open(file2,"r+") as f2:
+            # Fonction qui permet de supprimer toutes lignes contenant la chaîne de caractère 'chromosome'
+            with open(file2, "r+") as f2:
                 new_f2 = f2.readlines()
                 f2.seek(0)
                 for line in new_f2:
@@ -81,7 +85,7 @@ def split(file):
             ################
             F = open(file2, 'r+')
             R = F.read()
-            for key,value in mon_dict.items():
+            for key, value in mon_dict.items():
                 m2 = value.split("-")
                 transcript_ID2 = str(key)
                 Start2 = int(m2[0])
@@ -93,18 +97,19 @@ def split(file):
                     mon_dict_fasta[transcript_ID] = sequence
                 else:
                     mon_dict_fasta[transcript_ID] += sequence
-            
-            for key,value in mon_dict_fasta.items():
-                print(key,value)
-            
+
+            for key, value in mon_dict_fasta.items():
+                print(key, value)
+
         else:
             print("Utilisez fichiers format fasta")
-            
+
     fasta("chromosome22.fasta")
-        
-split("MYH9.gtf") 
 
-#####lien des fichiers 
 
-sequence chromosome22 : https://www.ncbi.nlm.nih.gov/sviewer/viewer.cgi?tool=portal&save=file&log$=seqview&db=nuccore&report=fasta&id=568815576&&ncbi_phid=null
-ficher gtf transcripts MYH9 : https://www.ensembl.org/Homo_sapiens/Export/Output/Gene?db=core;flank3_display=0;flank5_display=0;g=ENSG00000100345;output=gtf;r=22:36281280-36388010;strand=feature;param=similarity;param=repeat;param=genscan;param=variation;param=gene;vegagene=yes;marker=yes;estgene=yes;contig=yes;_format=TextGz
+split("MYH9.gtf")
+
+# lien des fichiers
+
+# sequence chromosome22 : https://www.ncbi.nlm.nih.gov/sviewer/viewer.cgi?tool=portal&save=file&log$=seqview&db=nuccore&report=fasta&id=568815576&&ncbi_phid=null
+# ficher gtf transcripts MYH9 : https://www.ensembl.org/Homo_sapiens/Export/Output/Gene?db=core;flank3_display=0;flank5_display=0;g=ENSG00000100345;output=gtf;r=22:36281280-36388010;strand=feature;param=similarity;param=repeat;param=genscan;param=variation;param=gene;vegagene=yes;marker=yes;estgene=yes;contig=yes;_format=TextGz
