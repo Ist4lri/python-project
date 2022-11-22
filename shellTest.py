@@ -1,11 +1,8 @@
 import subprocess
-import os
 
-print(__file__)
-
-if (__file__.startswith("/home")):
+if (__file__.startswith('/home')):
     print("Linux !")
-elif (__file__.startswith("C:\\")):
+elif (__file__.startswith('c:\\')):
     print("Windows !")
 else:
     print("Mac !")
