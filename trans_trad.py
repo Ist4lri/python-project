@@ -1,6 +1,5 @@
 ARN = ""
 PROT = ""
-counter = 0
 dict_traduire = {
     'GCU': 'Ala', 'GCC': 'Ala', 'GCA': 'Ala', 'GCG': 'Ala',
     'CGU': 'Arg', 'CGC': 'Arg', 'CGA': 'Arg', 'CGG': 'Arg',
@@ -20,9 +19,8 @@ dict_traduire = {
     'GUG': 'Val', 'UAG': 'Stop', 'UGA': 'Stop', 'UAA': 'Stop',
 }
 
-with open("Chr21.fasta", "r") as ADNSequence:
+with open("B.fasta", "r") as ADNSequence:
     for line in ADNSequence:
-        counter += 1
         if line[0] != ">":
             for char in line:
                 if (char != "N") & (char != "\n"):
@@ -35,7 +33,7 @@ with open("Chr21.fasta", "r") as ADNSequence:
                     else:
                         ARN += "G"
 
+counter = 0
 
 for i in range(0, len(ARN)):
-    if dict_traduire.get(ARN[i:i+3]):
-        PROT += dict_traduire.get(ARN[i:i+3])
+    if dict_traduire.get(ARN[i:i+3]) == "Met":
