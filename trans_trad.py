@@ -33,7 +33,7 @@ with open("B.fasta", "r") as ADNSequence:
                     else:
                         ARN += "G"
 
-counter = 0
+# counter = 0
 
-for i in range(0, len(ARN)):
-    if dict_traduire.get(ARN[i:i+3]) == "Met":
+# for i in range(0, len(ARN)):
+#     if dict_traduire.get(ARN[i:i+3]) == "Met":
