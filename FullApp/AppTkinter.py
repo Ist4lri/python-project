@@ -29,7 +29,7 @@ inLabel.columnconfigure(0, weight=1)
 inLabel.columnconfigure(1, weight=5)
 inLabel.columnconfigure(2, weight=1)
 
-Label(inLabel, text="Bienvenue. Ceci est un traducteur d'ADN qui possèdes quelques fonctionnalités supplémentaire.\nVous avez la possibilité de lancer ces fonctionnalités depuis un terminal, ou depuis l'application.").grid(row=0, column=1)
+Label(inLabel, text="Bienvenue. Ceci est un traducteur d'ADN qui possèdes quelques fonctionnalités supplémentaire.\nVous avez la possibilité de lancer ses fonctionnalités depuis un terminal, ou depuis l'application.").grid(row=0, column=1)
 
 shellButton = Button(inLabel, text="Terminal Shell",
                      command=launchShell)
