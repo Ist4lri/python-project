@@ -58,7 +58,6 @@ h = MainApp.winfo_screenheight()
 
 MainApp.geometry(
     f'{w}x{h}')
-MainApp.resizable(width=False, height=False)
 drawZone = Canvas(MainApp, width=w/2, height=h, bg='grey', cursor="target")
 drawZone.pack(
     side=LEFT, padx=20, pady=20)

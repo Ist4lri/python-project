@@ -35,6 +35,9 @@ def Transcription(sequence):
 
     return ARN
 
+
+def Tarduction(sequence):
+    print("bite")
 # counter = 0
 
 # for i in range(0, len(ARN)):
