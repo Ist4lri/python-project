@@ -1,4 +1,4 @@
-ARN = ""
+
 PROT = ""
 dict_traduire = {
     'GCU': 'Ala', 'GCC': 'Ala', 'GCA': 'Ala', 'GCG': 'Ala',
@@ -19,19 +19,21 @@ dict_traduire = {
     'GUG': 'Val', 'UAG': 'Stop', 'UGA': 'Stop', 'UAA': 'Stop',
 }
 
-with open("B.fasta", "r") as ADNSequence:
-    for line in ADNSequence:
-        if line[0] != ">":
-            for char in line:
-                if (char != "N") & (char != "\n"):
-                    if char == "A":
-                        ARN += "U"
-                    elif char == "T":
-                        ARN += "A"
-                    elif char == "G":
-                        ARN += "C"
-                    else:
-                        ARN += "G"
+
+def Transcription(sequence):
+    ARN = ""
+    for char in sequence:
+        if (char != "N") & (char != "\n"):
+            if char == "A":
+                ARN += "U"
+            elif char == "T":
+                ARN += "A"
+            elif char == "G":
+                ARN += "C"
+            else:
+                ARN += "G"
+
+    return ARN
 
 # counter = 0
 
