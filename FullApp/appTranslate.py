@@ -112,8 +112,6 @@ barMenu = Menu(MainApp)
 fileMenu = Menu(barMenu, tearoff=0)
 fileMenu.add_command(label="Enregistrer", command=pong)
 fileMenu.add_command(label="Enregistrer Sous", command=pong)
-fileMenu.add_separator()
-fileMenu.add_command(label="Quitter", command=MainApp.destroy)
 barMenu.add_cascade(label="Fichier", menu=fileMenu)
 
 editMenu = Menu(barMenu, tearoff=0)
