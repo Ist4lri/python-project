@@ -1,6 +1,4 @@
-
-PROT = ""
-dict_traduire = {
+dict_aa = {
     'GCU': 'Ala', 'GCC': 'Ala', 'GCA': 'Ala', 'GCG': 'Ala',
     'CGU': 'Arg', 'CGC': 'Arg', 'CGA': 'Arg', 'CGG': 'Arg',
     'AGA': 'Arg', 'AGG': 'Arg', 'AAU': 'Asn', 'AAC': 'Asn',
@@ -16,7 +14,7 @@ dict_traduire = {
     'AGU': 'Ser', 'AGC': 'Ser', 'ACU': 'Thr', 'ACC': 'Thr',
     'ACA': 'Thr', 'ACG': 'Thr', 'UGG': 'Trp', 'UAU': 'Tyr',
     'UAC': 'Tyr', 'GUU': 'Val', 'GUC': 'Val', 'GUA': 'Val',
-    'GUG': 'Val', 'UAG': 'Stop', 'UGA': 'Stop', 'UAA': 'Stop',
+    'GUG': 'Val', 'UAG': '*', 'UGA': '*', 'UAA': '*',
 }
 
 
@@ -36,9 +34,28 @@ def Transcription(sequence):
     return ARN
 
 
-def Tarduction(sequence):
-    print("bite")
-# counter = 0
+def Traduction(sequence):
+    PROT = ""
+    for codon in sequence:
+        if dict_aa[codon] == "*":
+            PROT += dict_aa[codon]
+            break
+        else:
+            PROT += dict_aa[codon]
 
-# for i in range(0, len(ARN)):
-#     if dict_traduire.get(ARN[i:i+3]) == "Met":
+    return PROT
+
+
+def preTrad(sequence):
+    result = {}
+    codons = [sequence[i:i+3] for i in range(0, len(sequence), 3)]
+    listOfStop = [i for i, x in enumerate(
+        codons) if x == "UAA" or x == "UGA" or x == "UAG"]
+    listOfStart = [i for i, x in enumerate(codons) if x == "AUG"]
+
+    index = 0
+    for start in listOfStart:
+        result[str(index+1)] = Traduction(codons[start:listOfStop[index]])
+        index += 1
+
+    print(result)
