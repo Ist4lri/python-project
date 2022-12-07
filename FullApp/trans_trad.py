@@ -18,9 +18,27 @@ dict_aa = {
 }
 
 
+def ExtractSequence(file):
+    transcript_ID = ""
+    sequenceList = {}
+    with open(file, "r") as file:
+        for line in file.readlines():
+            if line[0] == ">":
+                transcript_ID = line.replace("\n", "")
+                fusion = []
+            else:
+                if transcript_ID == "":
+                    transcript_ID == "Transcript 1"
+                    fusion = []
+                fusion.append(line.replace("\n", ""))
+            sequenceList[transcript_ID] = ["".join(fusion)]
+
+    return sequenceList
+
+
 def Transcription(sequence):
     ARN = ""
-    for char in sequence:
+    for char in str(sequence[0]):
         if (char != "N") & (char != "\n"):
             if char == "A":
                 ARN += "U"
