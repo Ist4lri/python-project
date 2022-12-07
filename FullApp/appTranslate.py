@@ -1,15 +1,24 @@
 from tkinter import *
 from tkinter import filedialog
+from tkinter import messagebox
 import trans_trad as tt
 
 
 ###############################################################################
-############################## CHOISIR UN FICHIER #############################
+############################### CHOISIR UN FASTA ##############################
 ###############################################################################
 
 def fileChoose():
     global filename
     filename = filedialog.askopenfilename(title="Chosse File")
+    fullPathName = filename.split(".")
+    extension = fullPathName[1]
+    while extension != "fasta":
+        messagebox.showerror(
+            "Error", "Veuillez sélectionner un fichier au format suivant : fasta")
+        filename = filedialog.askopenfilename(title="Chosse File")
+        fullPathName = filename.split(".")
+        extension = fullPathName[1]
     if filename:
         seq.pack_forget()
         lseq.pack_forget()
