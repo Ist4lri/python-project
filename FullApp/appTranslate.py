@@ -42,21 +42,22 @@ def displayResult(toBeDisplayed):
 
 
 def trans_trad(trad, type):
+    global catchFile
     if type == "file":
         if trad == "ADAR":
-            global catchFile
             catchFile = tt.ExtractSequence(filename)
             for k, v in catchFile.items():
                 Button(resultLabel, text=k, command=lambda v=v:  displayResult(tt.Transcription(v))).pack(
                     padx=10, pady=10)
+
     if type == "seq":
-        with open("tempOut.txt", "w") as outFile:
-            outFile.write(seq.get("1.0", "end"))
-        global catchText
-        catchText == tt.ExtractSequence("tempOut.txt")
-        for k, v in catchText.items():
-            Button(resultLabel, text=k, command=lambda v=v:  displayResult(tt.Transcription(v))).pack(
-                padx=10, pady=10)
+        if trad == "ADAR":
+            with open("FullApp/tempOut.txt", "w") as outFile:
+                outFile.write(seq.get("1.0", "end"))
+            catchFile = tt.ExtractSequence("FullApp/tempOut.txt")
+            for k, v in catchFile.items():
+                Button(resultLabel, text=k, command=lambda v=v:  displayResult(tt.Transcription(v))).pack(
+                    padx=10, pady=10)
 
 
 ###############################################################################

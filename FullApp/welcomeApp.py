@@ -2,6 +2,10 @@ from tkinter import *
 import subprocess
 import os
 
+###############################################################################
+######################## QUEL OPTIONS DE LANCEMENT ############################
+###############################################################################
+
 
 def launchApp():
     if appButton.click == True:
@@ -17,8 +21,9 @@ def launchShell():
         shellButton.click = False
 
 
-# ========================+DEBUT GENERATION FENETRE=============================================
-
+################################################################################
+###################### GENERATION DE L'APP, DEFINITION TAILLE ##################
+################################################################################
 
 # Génération de la fenêtre, en lui donnant une dimension donnée.
 welcomeW = Tk()
@@ -28,6 +33,10 @@ w = welcomeW.winfo_screenwidth()/2  # page. On lui donne également un titre.
 welcomeW.geometry(f'{int(w)}x{int(h)}')
 welcomeW.title("Welcome Window")
 
+
+################################################################################
+###################### GENERATION DES OPTIONS AVEC DESCRIPTIF###################
+################################################################################
 
 inLabel = LabelFrame(
     welcomeW, text="Traducteur V1.0", padx=20, pady=20, fg="blue", cursor="trek")
@@ -48,6 +57,11 @@ appButton = Button(inLabel, text="Application", command=launchApp)
 appButton.click = True
 appButton.grid(row=1, column=2)
 
+################################################################################
+########### GENERATION DU BOUTON QUITTER, ET DEVELOPPEURS LABEL ################
+################################################################################
+
+
 Button(inLabel, text="Quitter", command=welcomeW.destroy).grid(row=2, column=1)
 
 subLabel = LabelFrame(welcomeW, text="Développement",
@@ -55,5 +69,9 @@ subLabel = LabelFrame(welcomeW, text="Développement",
 subLabel.pack(fill="none", expand="no", padx=15, pady=15)
 Label(subLabel,
       text="Developpeurs :\nAUBERT Lucas\nGOUTTEBEL Pierre-Loïc").pack()
+
+################################################################################
+##################### GENERATION TDU RESULTAT FINAL ! ##########################
+################################################################################
 
 welcomeW.mainloop()

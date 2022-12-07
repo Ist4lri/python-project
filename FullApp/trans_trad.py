@@ -28,7 +28,7 @@ def ExtractSequence(file):
                 fusion = []
             else:
                 if transcript_ID == "":
-                    transcript_ID == "Transcript 1"
+                    transcript_ID = "Transcript 1"
                     fusion = []
                 fusion.append(line.replace("\n", ""))
             sequenceList[transcript_ID] = ["".join(fusion)]
