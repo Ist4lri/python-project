@@ -17,6 +17,10 @@ dict_aa = {
     "GUG": "Val", "UAG": "*", "UGA": "*", "UAA": "*",
 }
 
+################################################################################
+################ EXTRAIRE LES SEQUENCES DANS UN DICTIONNAIRE ###################
+################################################################################
+
 
 def ExtractSequence(file):
     transcript_ID = ""
@@ -34,6 +38,10 @@ def ExtractSequence(file):
             sequenceList[transcript_ID] = ["".join(fusion)]
 
     return sequenceList
+
+################################################################################
+############### FAIRE LA TRANSCRIPTION DE LA SEQUENCE ENVOYEE ##################
+################################################################################
 
 
 def Transcription(sequence):
@@ -53,6 +61,10 @@ def Transcription(sequence):
 
     return ARN
 
+################################################################################
+######### FAIRE LA TRADUCTION EN CHANGEANT DE DICTIONNAIRE (Option) ############
+################################################################################
+
 
 def Traduction(sequence, dict_aa=dict_aa):
     PROT = ""
@@ -64,6 +76,10 @@ def Traduction(sequence, dict_aa=dict_aa):
             PROT += dict_aa[codon]
 
     return PROT
+
+################################################################################
+############## FAIRE DES CODONS PORU TRADUIRE PLUS RAPIDEMENT ##################
+################################################################################
 
 
 def preTrad(sequence, dict_aa=dict_aa):
@@ -79,6 +95,10 @@ def preTrad(sequence, dict_aa=dict_aa):
         index += 1
 
     return result
+
+################################################################################
+############### VERIFIER SI LA SEQUENCE EST ARNique OU ADNique #################
+################################################################################
 
 
 def check(sequence):

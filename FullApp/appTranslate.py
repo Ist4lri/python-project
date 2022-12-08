@@ -9,6 +9,9 @@ import trans_trad as tt
 ###############################################################################
 
 def fileChoose(to_verif, secondOne=""):
+    global fileFasta
+    global fileGff
+    global fileTxt
     global filename
     filename = filedialog.askopenfilename(
         title="Chosse " + to_verif + " File")
@@ -16,10 +19,16 @@ def fileChoose(to_verif, secondOne=""):
     extension = fullPathName[1]
     while extension != to_verif and extension != secondOne:
         messagebox.showerror(
-            "Error", "Veuillez sélectionner un fichier au format suivant : ." + to_verif)
+            "Error", "Veuillez sélectionner un fichier au format suivant : ." + to_verif + " ou ." + secondOne)
         filename = filedialog.askopenfilename(title="Chosse File")
         fullPathName = filename.split(".")
         extension = fullPathName[1]
+    if extension == "fasta":
+        fileFasta = filename
+    elif extension == "gff3" or "gtf":
+        fileGff = filename
+    elif extension == "txt":
+        fileTxt = filename
 
 
 ###############################################################################
@@ -39,27 +48,9 @@ def displayResult(toBeDisplayed):
                        scrollregion=drawZone.bbox("all"))
 
 ###############################################################################
-############## QUELS OPTIONS VEUT L'UTILISATEUR POUR LA TRAD ##################
-###############################################################################
-
-
-def chooseTraductionOptions():
-    tradOption = Toplevel()
-    fButton = Button(tradOption, text='Charger un fichier GTF/GFF',
-                     command=lambda: [fileChoose("gff3", "gtf"), tradOption.destroy()])
-    fButton.pack(padx=10, pady=10)
-    fButton = Button(tradOption, text='Charger une autre table de traduction en txt',
-                     command=lambda: [fileChoose("txt"), tradOption.destroy()])
-    fButton.pack(padx=10, pady=10)
-    Button(tradOption, text='Je veux simplement traduire',
-           command=tradOption.destroy).pack(padx=10, pady=10)
-    Label(tradOption, text="La table de traduction doit être de la forme suivante : \n" +
-          str(tt.dict_aa)).pack(padx=10, pady=10)
-
-
-###############################################################################
 ####################### QUEL CHOIX L'UTILISATEUR A FAIT #######################
 ###############################################################################
+
 
 def trans_trad(trad, type):
     ###################
@@ -67,13 +58,11 @@ def trans_trad(trad, type):
     ###################
     global catchFile
     if type == "file":
-
         ###################
         ## FICHIER - ARN ##
         ###################
-
         if trad == "ADAR":
-            catchFile = tt.ExtractSequence(filename)
+            catchFile = tt.ExtractSequence(fileFasta)
             for k, v in catchFile.items():
                 Button(resultLabel, text=k, command=lambda v=v:  displayResult(tt.Transcription(v))).pack(
                     padx=10, pady=10)
@@ -83,11 +72,10 @@ def trans_trad(trad, type):
         #####################
 
         if trad == "ARP":
-            chooseTraductionOptions()
-
-    #####################
-    ## SI UNE SEQUENCE ##
-    #####################
+            print("bite")
+            #####################
+            ## SI UNE SEQUENCE ##
+            #####################
 
     if type == "seq":
 
@@ -125,6 +113,7 @@ def choose():
             chooseWindow.destroy(), trans_trad("ADP", "seq")]).grid(row=0, column=2)
         Button(chooseWindow, text="Quitter",
                command=chooseWindow.destroy).grid(row=1, column=1)
+    # Si la zone de texte est absente, on va envoyer la demande de faire la trans/trad à partir du fichier.
     else:
         chooseWindow = Toplevel()
         Button(chooseWindow, text="ADN -> ARN", command=lambda: [
@@ -135,8 +124,6 @@ def choose():
             chooseWindow.destroy(), trans_trad("ADP", "file")]).grid(row=0, column=2)
         Button(chooseWindow, text="Quitter",
                command=chooseWindow.destroy).grid(row=1, column=1)
-
-    # Si le chemin du fichier est présent, on va envoyer la demande de faire la trans/trad à partir du fichier.
 
 ################################################################################
 ######################### ENLEVER LES WIDGETS INUTILES #########################
@@ -158,7 +145,6 @@ def keyPress(event):
 MainApp = Tk()
 MainApp.title("Transcription/Translation App")
 global w, h
-global filename
 w = MainApp.winfo_screenwidth()
 h = MainApp.winfo_screenheight()
 MainApp.geometry(f'{int(w/1.2)}x{int(h/1.2)}')
@@ -185,13 +171,22 @@ lseq = Label(inLabel, text="Entrez votre séquence ici :")
 lseq.pack(padx=5, pady=10)
 seq = Text(inLabel, width=100, cursor="trek")
 seq.pack(padx=5, pady=10)
-MainApp.bind("<KeyPress>", keyPress)
+MainApp.bind("<KeyPress>", keyPress)  # Un "surveillant" d'actions au claviers
+
 Button(inLabel, text='Choisissez en quoi voulez vous le convertir',
        command=choose).pack(padx=10, pady=10)
-fButton = Button(inLabel, text='Charger un fichier FASTA',
-                 state=NORMAL, command=lambda: [fileChoose("fasta"), seq.pack_forget(), lseq.pack_forget()])
-fButton.pack(padx=10, pady=10)
 
+fastaButton = Button(inLabel, text='Charger un fichier FASTA',
+                     state=NORMAL, command=lambda: [fileChoose("fasta"), seq.pack_forget(), lseq.pack_forget()])
+fastaButton.pack(padx=10, pady=10)
+
+gffButton = Button(inLabel, text='Charger un fichier GTF/GFF',
+                   command=lambda: [fileChoose("gff3", "gtf")])
+gffButton.pack(padx=10, pady=10)
+
+fButton = Button(inLabel, text='Charger une autre table de traduction en txt',
+                 command=lambda: [fileChoose("txt")])
+fButton.pack(padx=10, pady=10)
 
 ################################################################################
 ################################### QUITTER ####################################
