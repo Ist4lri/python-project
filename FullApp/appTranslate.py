@@ -5,23 +5,21 @@ import trans_trad as tt
 
 
 ###############################################################################
-############################### CHOISIR UN FASTA ##############################
+############################## CHOISIR UN FICHIER #############################
 ###############################################################################
 
-def fileChoose():
+def fileChoose(to_verif):
     global filename
-    filename = filedialog.askopenfilename(title="Chosse File")
+    filename = filedialog.askopenfilename(
+        title="Chosse " + to_verif + " File")
     fullPathName = filename.split(".")
     extension = fullPathName[1]
-    while extension != "fasta":
+    while extension != to_verif:
         messagebox.showerror(
-            "Error", "Veuillez sélectionner un fichier au format suivant : fasta")
+            "Error", "Veuillez sélectionner un fichier au format suivant : ." + to_verif)
         filename = filedialog.askopenfilename(title="Chosse File")
         fullPathName = filename.split(".")
         extension = fullPathName[1]
-    if filename:
-        seq.pack_forget()
-        lseq.pack_forget()
 
 
 ###############################################################################
@@ -49,6 +47,8 @@ def trans_trad(trad, type):
             for k, v in catchFile.items():
                 Button(resultLabel, text=k, command=lambda v=v:  displayResult(tt.Transcription(v))).pack(
                     padx=10, pady=10)
+        if trad == "ARP":
+            print("bite")
 
     if type == "seq":
         if trad == "ADAR":
@@ -140,7 +140,7 @@ MainApp.bind("<KeyPress>", keyPress)
 Button(inLabel, text='Choisissez en quoi voulez vous le convertir',
        command=choose).pack(padx=10, pady=10)
 fButton = Button(inLabel, text='Charger un fichier FASTA',
-                 state=NORMAL, command=fileChoose)
+                 state=NORMAL, command=lambda: [fileChoose("fasta"), seq.pack_forget(), lseq.pack_forget()])
 fButton.pack(padx=10, pady=10)
 
 

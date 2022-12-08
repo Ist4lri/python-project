@@ -38,7 +38,7 @@ def ExtractSequence(file):
 
 def Transcription(sequence):
     ARN = ""
-    for char in str(sequence[0]):
+    for char in sequence[0]:
         if (char != "N") & (char != "\n"):
             if char == "A":
                 ARN += "U"
@@ -67,13 +67,22 @@ def Traduction(sequence):
 def preTrad(sequence):
     result = {}
     codons = [sequence[i:i+3] for i in range(0, len(sequence), 3)]
+    listOfStart = [i for i, x in enumerate(codons) if x == "AUG"]
     listOfStop = [i for i, x in enumerate(
         codons) if x == "UAA" or x == "UGA" or x == "UAG"]
-    listOfStart = [i for i, x in enumerate(codons) if x == "AUG"]
 
     index = 0
     for start in listOfStart:
         result[str(index+1)] = Traduction(codons[start:listOfStop[index]])
         index += 1
 
-    print(result)
+    return result
+
+
+def check(sequence):
+    for char in sequence:
+        if (char != "N") & (char != "\n"):
+            if char == "T":
+                return "ADN"
+            elif char == "U":
+                return "ARN"

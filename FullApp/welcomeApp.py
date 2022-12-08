@@ -25,11 +25,9 @@ def launchShell():
 ###################### GENERATION DE L'APP, DEFINITION TAILLE ##################
 ################################################################################
 
-# Génération de la fenêtre, en lui donnant une dimension donnée.
 welcomeW = Tk()
-# Afin qu'elle puisse êst visible tout en ne prenant pas toutes la
 h = welcomeW.winfo_screenheight()/3.2
-w = welcomeW.winfo_screenwidth()/2  # page. On lui donne également un titre.
+w = welcomeW.winfo_screenwidth()/2
 welcomeW.geometry(f'{int(w)}x{int(h)}')
 welcomeW.title("Welcome Window")
 
@@ -41,9 +39,8 @@ welcomeW.title("Welcome Window")
 inLabel = LabelFrame(
     welcomeW, text="Traducteur V1.0", padx=20, pady=20, fg="blue", cursor="trek")
 inLabel.pack(fill="both", expand="no", padx=30, pady=20)
-# Créer un "sous label" afin de pouvoir donner un certain esthétisme
 inLabel.columnconfigure(0, weight=1)
-inLabel.columnconfigure(1, weight=5)  # à la fenêtre.
+inLabel.columnconfigure(1, weight=5)
 inLabel.columnconfigure(2, weight=1)
 
 Label(inLabel, text="Bienvenue. Ceci est un traducteur d'ADN qui possèdes quelques fonctionnalités supplémentaire.\nVous avez la possibilité de lancer ses fonctionnalités depuis un terminal, ou depuis l'application.").grid(row=0, column=1)
