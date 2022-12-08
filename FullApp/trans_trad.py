@@ -1,20 +1,20 @@
 dict_aa = {
-    'GCU': 'Ala', 'GCC': 'Ala', 'GCA': 'Ala', 'GCG': 'Ala',
-    'CGU': 'Arg', 'CGC': 'Arg', 'CGA': 'Arg', 'CGG': 'Arg',
-    'AGA': 'Arg', 'AGG': 'Arg', 'AAU': 'Asn', 'AAC': 'Asn',
-    'GAU': 'Asp', 'GAC': 'Asp', 'UGU': 'Cys', 'UGC': 'Cys',
-    'CAA': 'Gln', 'CAG': 'Gln', 'GAA': 'Glu', 'GAG': 'Glu',
-    'GGU': 'Gly', 'GGC': 'Gly', 'GGA': 'Gly', 'GGG': 'Gly',
-    'CAU': 'His', 'CAC': 'His', 'AUU': 'Ile', 'AUC': 'Ile',
-    'AUA': 'Ile', 'UUA': 'Leu', 'UUG': 'Leu', 'CUU': 'Leu',
-    'CUC': 'Leu', 'CUA': 'Leu', 'CUG': 'Leu', 'AAA': 'Lys',
-    'AAG': 'Lys', 'AUG': 'Met', 'UUU': 'Phe', 'UUC': 'Phe',
-    'CCU': 'Pro', 'CCC': 'Pro', 'CCA': 'Pro', 'CCG': 'Pro',
-    'UCU': 'Ser', 'UCC': 'Ser', 'UCA': 'Ser', 'UCG': 'Ser',
-    'AGU': 'Ser', 'AGC': 'Ser', 'ACU': 'Thr', 'ACC': 'Thr',
-    'ACA': 'Thr', 'ACG': 'Thr', 'UGG': 'Trp', 'UAU': 'Tyr',
-    'UAC': 'Tyr', 'GUU': 'Val', 'GUC': 'Val', 'GUA': 'Val',
-    'GUG': 'Val', 'UAG': '*', 'UGA': '*', 'UAA': '*',
+    "GCU": "Ala", "GCC": "Ala", "GCA": "Ala", "GCG": "Ala",
+    "CGU": "Arg", "CGC": "Arg", "CGA": "Arg", "CGG": "Arg",
+    "AGA": "Arg", "AGG": "Arg", "AAU": "Asn", "AAC": "Asn",
+    "GAU": "Asp", "GAC": "Asp", "UGU": "Cys", "UGC": "Cys",
+    "CAA": "Gln", "CAG": "Gln", "GAA": "Glu", "GAG": "Glu",
+    "GGU": "Gly", "GGC": "Gly", "GGA": "Gly", "GGG": "Gly",
+    "CAU": "His", "CAC": "His", "AUU": "Ile", "AUC": "Ile",
+    "AUA": "Ile", "UUA": "Leu", "UUG": "Leu", "CUU": "Leu",
+    "CUC": "Leu", "CUA": "Leu", "CUG": "Leu", "AAA": "Lys",
+    "AAG": "Lys", "AUG": "Met", "UUU": "Phe", "UUC": "Phe",
+    "CCU": "Pro", "CCC": "Pro", "CCA": "Pro", "CCG": "Pro",
+    "UCU": "Ser", "UCC": "Ser", "UCA": "Ser", "UCG": "Ser",
+    "AGU": "Ser", "AGC": "Ser", "ACU": "Thr", "ACC": "Thr",
+    "ACA": "Thr", "ACG": "Thr", "UGG": "Trp", "UAU": "Tyr",
+    "UAC": "Tyr", "GUU": "Val", "GUC": "Val", "GUA": "Val",
+    "GUG": "Val", "UAG": "*", "UGA": "*", "UAA": "*",
 }
 
 
@@ -37,6 +37,8 @@ def ExtractSequence(file):
 
 
 def Transcription(sequence):
+    if check(sequence[0]) != "ADN":
+        return ("Warning, only ADN can be Transcripted. Please, make another attempt.")
     ARN = ""
     for char in sequence[0]:
         if (char != "N") & (char != "\n"):
@@ -52,10 +54,10 @@ def Transcription(sequence):
     return ARN
 
 
-def Traduction(sequence):
+def Traduction(sequence, dict_aa=dict_aa):
     PROT = ""
     for codon in sequence:
-        if dict_aa[codon] == "*":
+        if dict(dict_aa[codon]) == "*" or "Stop" or "STOP":
             PROT += dict_aa[codon]
             break
         else:
@@ -64,7 +66,7 @@ def Traduction(sequence):
     return PROT
 
 
-def preTrad(sequence):
+def preTrad(sequence, dict_aa=dict_aa):
     result = {}
     codons = [sequence[i:i+3] for i in range(0, len(sequence), 3)]
     listOfStart = [i for i, x in enumerate(codons) if x == "AUG"]
@@ -73,7 +75,7 @@ def preTrad(sequence):
 
     index = 0
     for start in listOfStart:
-        result[str(index+1)] = Traduction(codons[start:listOfStop[index]])
+        result[str(index+1)] = Traduction(codons[start:listOfStop[index]], dict_aa)
         index += 1
 
     return result

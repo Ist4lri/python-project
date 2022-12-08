@@ -8,13 +8,13 @@ import trans_trad as tt
 ############################## CHOISIR UN FICHIER #############################
 ###############################################################################
 
-def fileChoose(to_verif):
+def fileChoose(to_verif, secondOne=""):
     global filename
     filename = filedialog.askopenfilename(
         title="Chosse " + to_verif + " File")
     fullPathName = filename.split(".")
     extension = fullPathName[1]
-    while extension != to_verif:
+    while extension != to_verif and extension != secondOne:
         messagebox.showerror(
             "Error", "Veuillez sélectionner un fichier au format suivant : ." + to_verif)
         filename = filedialog.askopenfilename(title="Chosse File")
@@ -23,7 +23,7 @@ def fileChoose(to_verif):
 
 
 ###############################################################################
-########################### FAIRE TRANSCRIPTION ###############################
+#################### AFFICHER LE RESULTAT DANS UNE FENETRE ####################
 ###############################################################################
 
 def displayResult(toBeDisplayed):
@@ -38,19 +38,63 @@ def displayResult(toBeDisplayed):
     drawZone.configure(yscrollcommand=scl.set,
                        scrollregion=drawZone.bbox("all"))
 
+###############################################################################
+############## QUELS OPTIONS VEUT L'UTILISATEUR POUR LA TRAD ##################
+###############################################################################
+
+
+def chooseTraductionOptions():
+    tradOption = Toplevel()
+    fButton = Button(tradOption, text='Charger un fichier GTF/GFF',
+                     command=lambda: [fileChoose("gff3", "gtf"), tradOption.destroy()])
+    fButton.pack(padx=10, pady=10)
+    fButton = Button(tradOption, text='Charger une autre table de traduction en txt',
+                     command=lambda: [fileChoose("txt"), tradOption.destroy()])
+    fButton.pack(padx=10, pady=10)
+    Button(tradOption, text='Je veux simplement traduire',
+           command=tradOption.destroy).pack(padx=10, pady=10)
+    Label(tradOption, text="La table de traduction doit être de la forme suivante : \n" +
+          str(tt.dict_aa)).pack(padx=10, pady=10)
+
+
+###############################################################################
+####################### QUEL CHOIX L'UTILISATEUR A FAIT #######################
+###############################################################################
 
 def trans_trad(trad, type):
+    ###################
+    ## SI UN FICHIER ##
+    ###################
     global catchFile
     if type == "file":
+
+        ###################
+        ## FICHIER - ARN ##
+        ###################
+
         if trad == "ADAR":
             catchFile = tt.ExtractSequence(filename)
             for k, v in catchFile.items():
                 Button(resultLabel, text=k, command=lambda v=v:  displayResult(tt.Transcription(v))).pack(
                     padx=10, pady=10)
+
+        #####################
+        ## FICHIER - PROT ##
+        #####################
+
         if trad == "ARP":
-            print("bite")
+            chooseTraductionOptions()
+
+    #####################
+    ## SI UNE SEQUENCE ##
+    #####################
 
     if type == "seq":
+
+        ####################
+        ## SEQUENCE - ARN ##
+        ####################
+
         if trad == "ADAR":
             with open("FullApp/tempOut.txt", "w") as outFile:
                 outFile.write(seq.get("1.0", "end"))
@@ -59,6 +103,10 @@ def trans_trad(trad, type):
                 Button(resultLabel, text=k, command=lambda v=v:  displayResult(tt.Transcription(v))).pack(
                     padx=10, pady=10)
 
+        #####################
+        ## SEQUENCE - PROT ##
+        #####################
+
 
 ###############################################################################
 ###################### CHOISIR TRANSCRIPTION/TRADUCTION #######################
@@ -66,7 +114,7 @@ def trans_trad(trad, type):
 
 
 def choose():
-    # Si le chemin du fichier est présent, on va envoyer la demande de faire la trans/trad à partir du fichier.
+    # Si la zone de texte est présente, on va envoyer la demande de faire la trans/trad a partir du contenus de la zone de texte.
     if seq.get("1.0", "end") != "\n":
         chooseWindow = Toplevel()
         Button(chooseWindow, text="ADN -> ARN", command=lambda: [
@@ -87,12 +135,13 @@ def choose():
             chooseWindow.destroy(), trans_trad("ADP", "file")]).grid(row=0, column=2)
         Button(chooseWindow, text="Quitter",
                command=chooseWindow.destroy).grid(row=1, column=1)
-    # Si la zone de texte est présente, on va envoyer la demande de faire la trans/trad a partir du contenus de la zone de texte.
 
+    # Si le chemin du fichier est présent, on va envoyer la demande de faire la trans/trad à partir du fichier.
 
 ################################################################################
 ######################### ENLEVER LES WIDGETS INUTILES #########################
 ################################################################################
+
 
 def keyPress(event):
     fButton.pack_forget()
