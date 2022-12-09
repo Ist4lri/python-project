@@ -17,7 +17,7 @@ def launchApp():
 def launchShell():
     if shellButton.click == True:
         welcomeW.destroy()
-        subprocess.Popen(("gnome-terminal.real", "/usr/bin"))
+        os.system("python3 ShellApp/shellapp.py")
         shellButton.click = False
 
 
