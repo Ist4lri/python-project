@@ -56,6 +56,8 @@ def displayResult(toBeDisplayed):
 
 
 def trans_trad(trad, type):
+    global fileGff
+    global fileTxt
     ###################
     ## SI UN FICHIER ##
     ###################
@@ -66,26 +68,25 @@ def trans_trad(trad, type):
         ## FICHIER - ARN ##
         ###################
 
-        if trad == "ADAR" or "ADP":
+        if trad == "ADAR" or trad == "ADP":
             for k, v in catchFile.items():
-                Button(resultLabel, text="Trans = "+k, command=lambda v=v:  displayResult(tt.Transcription(v))).pack(
+                Button(resultLabel, text="Trans = "+k, command=lambda v=v:  displayResult(tt.Transcription(v[0]))).pack(
                     padx=10, pady=10)
 
         #####################
         ## FICHIER - PROT ##
         #####################
 
-        if trad == "ARP" or "ADP":
-            if not os.path.isfile(fileGff):
-                if not os.path.isfile(fileTxt):
-                    for k, v in catchFile.items():
-                        Button(resultLabel, text="Trad = "+k, command=lambda v=v: displayResult(
-                            tt.preTrad(v))).pack(padx=10, pady=10)
-                else:
-                    newDict = ex.toPutDict(fileTxt)
-                    for k, v in catchFile.items():
-                        Button(resultLabel, ext="Trad = "+k, command=lambda v=v: displayResult(
-                            tt.preTrad(v, newDict))).pack(padx=10, pady=10)
+        if trad == "ARP" or trad == "ADP":
+            if not os.path.isfile(fileTxt) and not os.path.isfile(fileGff):
+                for k, v in catchFile.items():
+                    Button(resultLabel, text="Trad = "+k, command=lambda v=v: displayResult(
+                        tt.preTrad(v[0]))).pack(padx=10, pady=10)
+            elif os.path.isfile(fileTxt) and not os.path.isfile(fileGff):
+                newDict = ex.toPutDict(fileTxt)
+                for k, v in catchFile.items():
+                    Button(resultLabel, text="Trad = "+k, command=lambda v=v: displayResult(
+                        tt.preTrad(v[0], newDict))).pack(padx=10, pady=10)
             #####################
             ## SI UNE SEQUENCE ##
             #####################
@@ -103,7 +104,7 @@ def trans_trad(trad, type):
 
         if trad == "ADAR" and "ADP":
             for k, v in catchFile.items():
-                Button(resultLabel, text="Trans = "+k, command=lambda v=v:  displayResult(tt.Transcription(v))).pack(
+                Button(resultLabel, text="Trans = "+k, command=lambda v=v:  displayResult(tt.Transcription(v[0]))).pack(
                     padx=10, pady=10)
 
         #####################
@@ -113,14 +114,14 @@ def trans_trad(trad, type):
         if trad == "ARP" and "ADP":
             if not os.path.isfile(fileGff):
                 if not os.path.isfile(fileTxt):
-                    for k, v in catchFile.items():
+                    for k, v in catchFile[0].items():
                         Button(resultLabel, text="Trad = "+k, command=lambda v=v: displayResult(
-                            tt.preTrad(v))).pack(padx=10, pady=10)
+                            tt.preTrad(v[0]))).pack(padx=10, pady=10)
                 else:
                     newDict = ex.toPutDict(fileTxt)
                     for k, v in catchFile.items():
-                        Button(resultLabel, ext="Trad = "+k, command=lambda v=v: displayResult(
-                            tt.preTrad(v, newDict))).pack(padx=10, pady=10)
+                        Button(resultLabel, text="Trad = "+k, command=lambda v=v: displayResult(
+                            tt.preTrad(v[0], newDict))).pack(padx=10, pady=10)
 
 ###############################################################################
 ###################### CHOISIR TRANSCRIPTION/TRADUCTION #######################

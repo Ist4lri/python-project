@@ -45,10 +45,10 @@ def ExtractSequence(file):
 
 
 def Transcription(sequence):
-    if check(sequence[0]) != "ADN":
+    if check(sequence) != "ADN":
         return ("Warning, only ADN can be Transcripted. Please, make another attempt.")
     ARN = ""
-    for char in sequence[0]:
+    for char in sequence:
         if (char != "N") & (char != "\n"):
             if char == "A":
                 ARN += "U"
@@ -88,19 +88,10 @@ def preTrad(sequence, dict_aa=dict_aa):
     if check(sequence) == "ARN":
         result = {}
         codons = [sequence[i:i+3] for i in range(0, len(sequence), 3)]
-        listOfStart = [i for i, x in enumerate(codons) if x == "AUG"]
-        listOfStop = [i for i, x in enumerate(
-            codons) if x == "UAA" or x == "UGA" or x == "UAG"]
 
         index = 0
-        for start in listOfStart:
-            result[str(index+1)
-                   ] = Traduction(codons[start:listOfStop[index]], dict_aa)
-            index += 1
-        if result[str(index)] != "":
-            return result
-        else:
-            return "Error, use a GTF/GFF file"
+        result[str(index+1)] = Traduction(codons, dict_aa)
+        return result
 
     else:
         ARN = Transcription(sequence)
@@ -113,7 +104,7 @@ def preTrad(sequence, dict_aa=dict_aa):
 
 
 def check(sequence):
-    for char in sequence[0]:
+    for char in sequence:
         if (char != "N") & (char != "\n"):
             if char == "T":
                 return "ADN"
