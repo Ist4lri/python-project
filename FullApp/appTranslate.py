@@ -1,9 +1,9 @@
 from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
-import trans_trad as tt
+import mainFunctions as tt
 import os
-import extraction as ex
+import extractData as ex
 
 ###############################################################################
 ############################## CHOISIR UN FICHIER #############################
@@ -78,19 +78,48 @@ def trans_trad(trad, type):
         #####################
 
         if trad == "ARP" or trad == "ADP":
+
+            ############################
+            ## Si pas de GTF ni TABLE ##
+            ############################
+
             if not os.path.isfile(fileTxt) and not os.path.isfile(fileGff):
                 for k, v in catchFile.items():
                     Button(resultLabel, text="Trad = "+k, command=lambda v=v: displayResult(
                         tt.preTrad(v[0]))).pack(padx=10, pady=10)
 
+            ###########################
+            ## Si TABLE mais pas GTF ##
+            ###########################
+
             elif os.path.isfile(fileTxt) and not os.path.isfile(fileGff):
                 newDict = ex.toPutDict(fileTxt)
                 for k, v in catchFile.items():
                     Button(resultLabel, text="Trad = "+k, command=lambda v=v: displayResult(
-                        tt.preTrad(v[0], newDict))).pack(padx=10, pady=10)
+                        tt.preTrad(v[0], dict_aa=newDict))).pack(padx=10, pady=10)
+
+            ###########################
+            ## Si GFF mais pas TABLE ##
+            ###########################
+
+            elif not os.path.isfile(fileTxt) and os.path.isfile(fileGff):
+                for k, v in catchFile.items():
+                    Button(resultLabel, text="Trad = "+k, command=lambda v=v: displayResult(
+                        tt.tradWithGff(v[0], fileGff))).pack(padx=10, pady=10)
+
             #####################
-            ## SI UNE SEQUENCE ##
+            ## Si TABLE et GTF ##
             #####################
+
+            elif os.path.isfile(fileTxt) and os.path.isfile(fileGff):
+                newDict = ex.toPutDict(fileTxt)
+                for k, v in catchFile.items():
+                    Button(resultLabel, text="Trad = "+k, command=lambda v=v: displayResult(
+                        tt.tradWithGff(v[0], fileGff, dict_aa=newDict))).pack(padx=10, pady=10)
+
+                #####################
+                ## SI UNE SEQUENCE ##
+                #####################
 
     if type == "seq":
         fileTxt = "coucou.txt"
@@ -112,17 +141,26 @@ def trans_trad(trad, type):
         ## SEQUENCE - PROT ##
         #####################
 
-        if trad == "ARP" and "ADP":
-            if not os.path.isfile(fileGff):
-                if not os.path.isfile(fileTxt):
-                    for k, v in catchFile[0].items():
-                        Button(resultLabel, text="Trad = "+k, command=lambda v=v: displayResult(
-                            tt.preTrad(v[0]))).pack(padx=10, pady=10)
-                else:
-                    newDict = ex.toPutDict(fileTxt)
-                    for k, v in catchFile.items():
-                        Button(resultLabel, text="Trad = "+k, command=lambda v=v: displayResult(
-                            tt.preTrad(v[0], newDict))).pack(padx=10, pady=10)
+        if trad == "ARP" or trad == "ADP":
+
+            ############################
+            ## Si pas de GTF ni TABLE ##
+            ############################
+
+            if not os.path.isfile(fileTxt) and not os.path.isfile(fileGff):
+                for k, v in catchFile.items():
+                    Button(resultLabel, text="Trad = "+k, command=lambda v=v: displayResult(
+                        tt.preTrad(v[0]))).pack(padx=10, pady=10)
+
+            ###########################
+            ## Si TABLE mais pas GTF ##
+            ###########################
+
+            elif os.path.isfile(fileTxt) and not os.path.isfile(fileGff):
+                newDict = ex.toPutDict(fileTxt)
+                for k, v in catchFile.items():
+                    Button(resultLabel, text="Trad = "+k, command=lambda v=v: displayResult(
+                        tt.preTrad(v[0], dict_aa=newDict))).pack(padx=10, pady=10)
 
 ###############################################################################
 ###################### CHOISIR TRANSCRIPTION/TRADUCTION #######################
