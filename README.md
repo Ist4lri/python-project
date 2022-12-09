@@ -23,3 +23,5 @@ For giving another table Translation, please, put a file with this format, in tx
 Spoiler alert, Shell terminal is just so many more faster than the tkinter app
 
 AAaaaaaaaaaaaaaaaaaaaaaaaand....That's it !!
+
+GITHUB here : https://github.com/Ist4lri/python-project
