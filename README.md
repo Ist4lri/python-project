@@ -4,7 +4,6 @@ For using this project, simply run the "welcomeApp" file. All will be explain, i
 
 You can be on a shell terminal, on linux, or you can be on a tkinter application. 
 
-image.png
 
 You can paste your sequence, or, select a fasta file. You can also select a GTF/GFF file, and use another translation table to make translation ARN to Proteins.
 
