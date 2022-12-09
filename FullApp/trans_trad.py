@@ -56,8 +56,10 @@ def Transcription(sequence):
                 ARN += "A"
             elif char == "G":
                 ARN += "C"
-            else:
+            elif char == "C":
                 ARN += "G"
+            else:
+                ARN += "-UN-"
 
     return ARN
 
@@ -69,7 +71,7 @@ def Transcription(sequence):
 def Traduction(sequence, dict_aa=dict_aa):
     PROT = ""
     for codon in sequence:
-        if dict(dict_aa[codon]) == "*" or "Stop" or "STOP":
+        if dict_aa[codon] == "*":
             PROT += dict_aa[codon]
             break
         else:
@@ -83,18 +85,27 @@ def Traduction(sequence, dict_aa=dict_aa):
 
 
 def preTrad(sequence, dict_aa=dict_aa):
-    result = {}
-    codons = [sequence[i:i+3] for i in range(0, len(sequence), 3)]
-    listOfStart = [i for i, x in enumerate(codons) if x == "AUG"]
-    listOfStop = [i for i, x in enumerate(
-        codons) if x == "UAA" or x == "UGA" or x == "UAG"]
+    if check(sequence) == "ARN":
+        result = {}
+        codons = [sequence[i:i+3] for i in range(0, len(sequence), 3)]
+        listOfStart = [i for i, x in enumerate(codons) if x == "AUG"]
+        listOfStop = [i for i, x in enumerate(
+            codons) if x == "UAA" or x == "UGA" or x == "UAG"]
 
-    index = 0
-    for start in listOfStart:
-        result[str(index+1)] = Traduction(codons[start:listOfStop[index]], dict_aa)
-        index += 1
+        index = 0
+        for start in listOfStart:
+            result[str(index+1)
+                   ] = Traduction(codons[start:listOfStop[index]], dict_aa)
+            index += 1
+        if result[str(index)] != "":
+            return result
+        else:
+            return "Error, use a GTF/GFF file"
 
-    return result
+    else:
+        ARN = Transcription(sequence)
+        result = preTrad(ARN)
+        return result
 
 ################################################################################
 ############### VERIFIER SI LA SEQUENCE EST ARNique OU ADNique #################
@@ -102,7 +113,7 @@ def preTrad(sequence, dict_aa=dict_aa):
 
 
 def check(sequence):
-    for char in sequence:
+    for char in sequence[0]:
         if (char != "N") & (char != "\n"):
             if char == "T":
                 return "ADN"

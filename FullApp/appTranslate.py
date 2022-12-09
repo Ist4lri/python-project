@@ -2,17 +2,18 @@ from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
 import trans_trad as tt
-
+import os
+import extraction as ex
 
 ###############################################################################
 ############################## CHOISIR UN FICHIER #############################
 ###############################################################################
 
+
 def fileChoose(to_verif, secondOne=""):
     global fileFasta
     global fileGff
     global fileTxt
-    global filename
     filename = filedialog.askopenfilename(
         title="Chosse " + to_verif + " File")
     fullPathName = filename.split(".")
@@ -25,7 +26,9 @@ def fileChoose(to_verif, secondOne=""):
         extension = fullPathName[1]
     if extension == "fasta":
         fileFasta = filename
-    elif extension == "gff3" or "gtf":
+        fileTxt = "coucou.txt"
+        fileGff = "coucou.txt"
+    elif extension == "gff3" and "gtf":
         fileGff = filename
     elif extension == "txt":
         fileTxt = filename
@@ -58,43 +61,66 @@ def trans_trad(trad, type):
     ###################
     global catchFile
     if type == "file":
+        catchFile = tt.ExtractSequence(fileFasta)
         ###################
         ## FICHIER - ARN ##
         ###################
-        if trad == "ADAR":
-            catchFile = tt.ExtractSequence(fileFasta)
+
+        if trad == "ADAR" or "ADP":
             for k, v in catchFile.items():
-                Button(resultLabel, text=k, command=lambda v=v:  displayResult(tt.Transcription(v))).pack(
+                Button(resultLabel, text="Trans = "+k, command=lambda v=v:  displayResult(tt.Transcription(v))).pack(
                     padx=10, pady=10)
 
         #####################
         ## FICHIER - PROT ##
         #####################
 
-        if trad == "ARP":
-            print("bite")
+        if trad == "ARP" or "ADP":
+            if not os.path.isfile(fileGff):
+                if not os.path.isfile(fileTxt):
+                    for k, v in catchFile.items():
+                        Button(resultLabel, text="Trad = "+k, command=lambda v=v: displayResult(
+                            tt.preTrad(v))).pack(padx=10, pady=10)
+                else:
+                    newDict = ex.toPutDict(fileTxt)
+                    for k, v in catchFile.items():
+                        Button(resultLabel, ext="Trad = "+k, command=lambda v=v: displayResult(
+                            tt.preTrad(v, newDict))).pack(padx=10, pady=10)
             #####################
             ## SI UNE SEQUENCE ##
             #####################
 
     if type == "seq":
+        fileTxt = "coucou.txt"
+        fileGff = "coucou.txt"
+        with open("FullApp/tempOut.txt", "w") as outFile:
+            outFile.write(seq.get("1.0", "end"))
+        catchFile = tt.ExtractSequence("FullApp/tempOut.txt")
 
         ####################
         ## SEQUENCE - ARN ##
         ####################
 
-        if trad == "ADAR":
-            with open("FullApp/tempOut.txt", "w") as outFile:
-                outFile.write(seq.get("1.0", "end"))
-            catchFile = tt.ExtractSequence("FullApp/tempOut.txt")
+        if trad == "ADAR" and "ADP":
             for k, v in catchFile.items():
-                Button(resultLabel, text=k, command=lambda v=v:  displayResult(tt.Transcription(v))).pack(
+                Button(resultLabel, text="Trans = "+k, command=lambda v=v:  displayResult(tt.Transcription(v))).pack(
                     padx=10, pady=10)
 
         #####################
         ## SEQUENCE - PROT ##
         #####################
 
+        if trad == "ARP" and "ADP":
+            if not os.path.isfile(fileGff):
+                if not os.path.isfile(fileTxt):
+                    for k, v in catchFile.items():
+                        Button(resultLabel, text="Trad = "+k, command=lambda v=v: displayResult(
+                            tt.preTrad(v))).pack(padx=10, pady=10)
+                else:
+                    newDict = ex.toPutDict(fileTxt)
+                    for k, v in catchFile.items():
+                        Button(resultLabel, ext="Trad = "+k, command=lambda v=v: displayResult(
+                            tt.preTrad(v, newDict))).pack(padx=10, pady=10)
 
 ###############################################################################
 ###################### CHOISIR TRANSCRIPTION/TRADUCTION #######################
@@ -126,15 +152,19 @@ def choose():
                command=chooseWindow.destroy).grid(row=1, column=1)
 
 ################################################################################
-######################### ENLEVER LES WIDGETS INUTILES #########################
+################# ENLEVER LE WIDGETS INUTILES SI SAISIE TXT ####################
 ################################################################################
 
 
 def keyPress(event):
-    fButton.pack_forget()
+    fastaButton.pack_forget()
     if seq.get("1.0", "end") == "\n":
+        txtButton.pack_forget()
+        gffButton.pack_forget()
         quit.pack_forget()
-        fButton.pack(padx=10, pady=10)
+        fastaButton.pack(padx=10, pady=10)
+        gffButton.pack(padx=10, pady=10)
+        txtButton.pack(padx=10, pady=10)
         quit.pack(padx=10, pady=10)
 
 
@@ -184,9 +214,9 @@ gffButton = Button(inLabel, text='Charger un fichier GTF/GFF',
                    command=lambda: [fileChoose("gff3", "gtf")])
 gffButton.pack(padx=10, pady=10)
 
-fButton = Button(inLabel, text='Charger une autre table de traduction en txt',
-                 command=lambda: [fileChoose("txt")])
-fButton.pack(padx=10, pady=10)
+txtButton = Button(inLabel, text='Charger une autre table de traduction en txt',
+                   command=lambda: [fileChoose("txt")])
+txtButton.pack(padx=10, pady=10)
 
 ################################################################################
 ################################### QUITTER ####################################
