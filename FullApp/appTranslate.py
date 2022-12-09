@@ -82,6 +82,7 @@ def trans_trad(trad, type):
                 for k, v in catchFile.items():
                     Button(resultLabel, text="Trad = "+k, command=lambda v=v: displayResult(
                         tt.preTrad(v[0]))).pack(padx=10, pady=10)
+
             elif os.path.isfile(fileTxt) and not os.path.isfile(fileGff):
                 newDict = ex.toPutDict(fileTxt)
                 for k, v in catchFile.items():

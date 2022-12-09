@@ -31,9 +31,11 @@ def ExtractSequence(file):
                 transcript_ID = line.replace("\n", "")
                 fusion = []
             else:
+                index = 1
                 if transcript_ID == "":
-                    transcript_ID = "Transcript 1"
+                    transcript_ID = "Transcript " + str(index)
                     fusion = []
+                    index += 1
                 fusion.append(line.replace("\n", ""))
             sequenceList[transcript_ID] = ["".join(fusion)]
 
@@ -72,7 +74,6 @@ def Traduction(sequence, dict_aa=dict_aa):
     PROT = ""
     for codon in sequence:
         if dict_aa[codon] == "*":
-            PROT += dict_aa[codon]
             break
         else:
             PROT += dict_aa[codon]
